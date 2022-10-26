@@ -4,9 +4,10 @@ param servicePrefix string
 param abbreviation string
 param appServicePlanId string
 param applicationInsightsConnectionString string
+param resourceToken string
 
 resource appService 'Microsoft.Web/sites@2022-03-01' = {
-  name: '${abbreviation}${servicePrefix}-${location}-001'
+  name: '${abbreviation}${servicePrefix}-${location}-${resourceToken}'
   location: location
   tags: tags
   properties: {
@@ -17,7 +18,7 @@ resource appService 'Microsoft.Web/sites@2022-03-01' = {
       netFrameworkVersion: 'v6.0'
     }
     httpsOnly: true
-  } 
+  }
 
   identity: {
     type: 'SystemAssigned'
