@@ -2,9 +2,10 @@ param location string
 param tags object
 param servicePrefix string
 param abbreviation string
+param resourceToken string
 
 resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2020-03-01-preview' = {
-  name: '${abbreviation}${servicePrefix}-${location}-001'
+  name: '${abbreviation}${servicePrefix}-${location}-${resourceToken}'
   location: location
   tags: tags
   properties: any({

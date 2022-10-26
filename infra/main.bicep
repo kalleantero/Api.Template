@@ -9,19 +9,19 @@ param name string
 @description('Primary location for all resources')
 param location string
 
-@description('Id of the user or app to assign app roles')
-param principalId string = ''
-
 @description('Azure resource tags')
 param tags object
 
 @description('Service prefix which is assigned to every resource name')
 param servicePrefix string
 
+var resourceToken = toLower(uniqueString(subscription().id, name, location))
+var combinedTags = union(tags, { 'azd-env-name': name })
+
 resource resourceGroup 'Microsoft.Resources/resourceGroups@2020-06-01' = {
     name: 'rg-${name}'
     location: location
-    tags: tags
+    tags: combinedTags
 }
 
 module resources './modules/resources.bicep' = {
@@ -29,12 +29,11 @@ module resources './modules/resources.bicep' = {
     scope: resourceGroup
     params: {
         location: location
-        principalId: principalId
-        tags: tags
+        tags: combinedTags
         servicePrefix: servicePrefix
+        resourceToken: resourceToken
     }
 }
 
 output APP_WEB_BASE_URL string = resources.outputs.API_URI
 output AZURE_LOCATION string = location
-

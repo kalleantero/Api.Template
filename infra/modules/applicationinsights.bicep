@@ -3,9 +3,10 @@ param tags object
 param servicePrefix string
 param workspaceId string
 param abbreviation string
+param resourceToken string
 
 resource applicationInsights 'Microsoft.Insights/components@2020-02-02' = {
-  name: '${abbreviation}${servicePrefix}-${location}-001'
+  name: '${abbreviation}${servicePrefix}-${location}-${resourceToken}'
   location: location
   tags: tags
   kind: 'web'

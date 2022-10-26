@@ -1,7 +1,7 @@
 param location string
-param principalId string = ''
 param tags object
 param servicePrefix string
+param resourceToken string
 
 var abbreviations = loadJsonContent('../assets/abbreviations.json')
 
@@ -12,6 +12,7 @@ module logAnalyticsWorkspace 'logAnalyticsWorkspace.bicep' = {
     tags: tags
     servicePrefix: servicePrefix
     abbreviation: abbreviations.logAnalyticsWorkspace
+    resourceToken: resourceToken
   }
 }
 
@@ -23,6 +24,7 @@ module applicationInsightsResources 'applicationinsights.bicep' = {
     workspaceId: logAnalyticsWorkspace.outputs.logAnalyticsWorkspaceId
     abbreviation: abbreviations.applicationInsights
     servicePrefix: servicePrefix
+    resourceToken: resourceToken
   }
 }
 
@@ -35,6 +37,7 @@ module appServicePlan 'appServicePlan.bicep' = {
     abbreviation: abbreviations.appServicePlan
     sku: 'F1'
     kind: 'app,windows'
+    resourceToken: resourceToken
   }
 }
 
@@ -42,11 +45,12 @@ module appService 'appService.bicep' = {
   name: 'appService-resources'
   params: {
     location: location
-    tags: tags
+    tags: union(tags, { 'azd-service-name': 'appService' })
     servicePrefix: servicePrefix
     abbreviation: abbreviations.webApp
     applicationInsightsConnectionString: applicationInsightsResources.outputs.applicationInsightsConnectionString
     appServicePlanId: appServicePlan.outputs.appServicePlanId
+    resourceToken: resourceToken
   }
 }
 
