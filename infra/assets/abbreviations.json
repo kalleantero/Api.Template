@@ -1,0 +1,6 @@
+{
+  "applicationInsights": "appi-",
+  "logAnalyticsWorkspace": "log-",
+  "appServicePlan": "plan-",
+  "webApp": "app-"
+}

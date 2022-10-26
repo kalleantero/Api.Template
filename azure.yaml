@@ -1,0 +1,9 @@
+name: Api.Template
+metadata:
+  template: webapi-tempalte-azd@0.0.1-beta
+services:
+  appService:
+    project: src/Api.Template
+    language: csharp
+    host: appservice
+    resourceName: app-microservice-westeurope-001
